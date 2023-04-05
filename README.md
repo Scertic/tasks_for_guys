@@ -46,60 +46,67 @@ Writes the obtained list of objects to the specified dest stream. The operation 
 
 > _Note_: In the future, it is expected that objects of these classes will be transferred over a network or stored in a file or database.  
 
-* The string representation of an object of these classes must follow the following convention:  
-      ``` 
-        Class_name{field1_name=field_value, field2_name=field_value, …}  
-        
-      ```
+* The string representation of an object of these classes must follow the following convention:
+    ``` 
+    Class_name{field1_name=field_value, field2_name=field_value, …}
+    ```
      -	If a class inherits another class, it must include inherited fields before its own fields:  
         ```
          Class_name{parent_class_fields,   own_fields}
         ```
--	String values must be surrounded by apostrophes. For example: text='value' 
--	If a field is a collection or an array, its value must be surrounded by square brackets.
--	Fields must be ordered as denoted in the UML class diagram.
-•	The configuration properties stored in the CsvStorageImpl class are as follows:
--	String encoding
+    -	String values must be surrounded by apostrophes. For example: text='value'  
+    -	If a field is a collection or an array, its value must be surrounded by square brackets.
+    -	Fields must be ordered as denoted in the UML class diagram.  
+* The configuration properties stored in the `CsvStorageImpl ` class are as follows:
+  -	`String encoding`  
 The encoding used when reading the csv files must be a valid charset. The default value is "UTF-8"
--	String quoteCharacter
+  -	`String quoteCharacter`  
 The quote character is used for string data. The default value is '"'
--	String valuesDelimiter
+  -	`String valuesDelimiter`  
 The column delimiter character is used when reading a csv file. The default value is ","
--	boolean headerLine
+  -	`boolean headerLine`  
 If true, the first line is considered a header and must be ignored. The default value is "true"
-•	Converting string data to object field values has the following features:
--	Empty string must be converted to null for referenced types or to the default value for primitive types.
--	A quoted empty string "" must be converted to an empty string. It is guaranteed that quoted strings will not contain the quoteCharacter character.
--	A string representation of a value must be quoted if it contains the valuesDelimiter character.
--	A string representation of a date must be in the format "yyyy-mm-dd". It is guaranteed that a date will not contain time-related values.
-•	Converting object fields to strings has the following features:
--	A null must be converted to an empty string.
--	An empty string must be converted to a quoted empty string "".
-•	The write() method of the CsvStorageImp class never writes column headers.
+* Converting string data to object field values has the following features:
+  -	Empty string must be converted to `null` for referenced types or to the default value for primitive types.  
+  -	A quoted empty string "" must be converted to an empty string. It is guaranteed that quoted strings will not contain the _quoteCharacter_ character.  
+  -	A string representation of a value must be quoted if it contains the _valuesDelimiter_ character.
+  -	A string representation of a date must be in the format "yyyy-mm-dd". It is guaranteed that a date will not contain time-related values.
+* Converting object fields to strings has the following features:
+  -	A `null` must be converted to an empty string.
+  -	An empty string must be converted to a quoted empty string "".
+* The `write()` method of the `CsvStorageImp` class never writes column headers.
 
-An example of a string representation
+## An example of a string representation
+
+
 Let class A have the following description:
+```
 class A {
     private int p = 10;
     protected int a = 1;
     protected String s = "a string";
     // ...
 }
-
+```
 The string representation of the object will be as follows:
+```
 A{p=10, a=1, s='a string'}
-
+```
 Let class B be the inheritor of class A and have the following description:
+```
 class B extends A {
     private int b = 5;
     private String t = "a text";
     private char[] chars = {'a', 'b'};
     // ...
 }
-
+```
 The string representation of the object will be as follows:
+```
 B{a=1, s='a string', b=5, t='a text', chars=[a, b]}
+```
+### Restrictions
 
-Restrictions
+
 You may not use lambda expressions or streams.
 
