@@ -1,138 +1,105 @@
 # Vehicle Rent Agency
 
-The purpose of this exercise is to check if you understand work with input/output.
+The purpose of this exercise is to check your understanding of the Java input/output system.
 
 Duration: **2** hours
 
 ## Description
 
-In this exercise you need to develop an entity classes hierarchy composition
-to store data of agency’s vehicles park and orders. Also, you need to implement
-`CsvStorage` service to store entities to `csv` file format.
-The class diagram of the Domain model:
+In this exercise, you will implement "Vehicle Rental Agency" with support for storing and reading/writing entities from/to csv files. 
+The class diagram of the Domain model is shown in the figure below:
 
 ![domain_classes_uml.png](domain_classes_uml.png)
 
-The `CsvStorage` interface has two methods:
+You are also given a description of the following interfaces and classes:  
+  * The `CsvStorage` interface provides two methods for reading/writing data from/to a csv file.  
 
-- `<T> List<T> read(InputStream source, Function<String[], T> mapper) throws IOException` \
-  Reads the supplied source line by line, splitting each line into a `String` array
-  using `valuesDelimiter`, then passing the array to the `mapper` for each line. \
-  `mapper` is a function which maps the array values to an object fields 
-  (see Details section). \
-  `T` is the type parameter that represents the entity class to read. \
-  Returns a List of the entity class objects.
+  * The `Mapper` interface provides static methods for converting text to an object of each entity class and vice versa.  
 
-- `<T> void write(OutputStream dest, List<T> value, Function<T, String[]> mapper) throws IOException` \
-  Writes the provided list of objects line by line to the provided `OutputStream`. 
-  Uses 'mapper' to get an array of object fields values. \
-  `mapper` is a function that converts an object fields values to a strings array.
-  (see Details section).
+  * The `CsvStorageImpl` class implements the `CsvStorage` interface.  
 
-Proceed to `CsvStorageImpl` class which implements `CsvStorage` 
-and implement it.
+  * The `Demo` class demonstrates how to use the `CsvStorageImpl` class to read objects of the `Client`, `Employee`, `Vehicle`, and `Order` type; print them to the console; and write objects of the Order type to a file  
 
-## Details
+> _Note_: You must not modify the `Demo` class. Files with a description of objects of entity classes are located in the folder `"src/test/resources/entity/"`
 
-The `CsvStorageImpl` class must have default constructor 
-and the constructor that takes a `Map<String, String>`, which **can** contain 
-zero or more configuration properties.
-The configuration properties are:
-- `String encoding` default value is '`UTF-8`'. \
-  The encoding to use when reading the CSV files; must be a valid charset. 
-- `String quoteCharacter` default value is '`"`'. \
-  The quote character to use for _quoted strings_ (see below). 
-- `String valuesDelimiter` default value is '`,`'. \
-  The column delimiter character to use when reading the CSV file. 
-- `boolean headerLine` default value is '`true`'. \
-  If `true`, the first line is considered a header and must be ignored.
+First, proceed to the Domain model classes and implement their content.  
+Then, proceed to the `CsvStorageImpl` class and implement its content:  
 
-### Mapping functions
+* `public CsvStorageImpl()`  
+Initializes the configuration properties of a csv file with the default values  
 
-Mappers map string values to fields for the read method and fields to 
-strings array for the write method.
+* `public CsvStorageImpl(Map<String, String> props)`  
+Initializes the configuration properties of a csv file with the received values  
 
-All mapping functions must be collected in `Mapper` class.
+* `<T> List<T> read(InputStream source, Function<String[], T> mapper) throws IOException`  
+Returns the contents of the received file as a list of objects. The operation algorithm is as follows: It reads lines with data descriptions through the received source stream. Then, it splits each string into an array of String elements using valuesDelimiter. Then, it converts the resulting array into an object of the T type using the mapper parameter, a function that creates an object of the T type with field values taken from the given array.  
 
-**Writing**
+* `<T> void write(OutputStream dest, List<T> value, Function<T, String[]> mapper) throws IOException`  
+Writes the obtained list of objects to the specified dest stream. The operation algorithm is as follows: Each object of the T type is converted into an array of the String type using the mapper parameter. The elements of the array are then collected into a single string using valuesDelimiter to separate them. Then, the resulting string is written to a file. The mapper parameter is a function that converts an object of the T type into an array of the String type.  
 
-- `null` must be converted to the empty string.
-- Empty string must be converted to the quoted empty string `""`
-> `CsvStorageImpl#write()` never writes column headers.
+### Details
+* Domain model classes must have the following:
+  -	A default constructor
+  -	A constructor that takes values to initialize all fields as parameters
+  -	Getters and setters for all fields
+  -	The `equals()`, `hashCode()`, and `toString()` methods 
 
-**Reading** 
+> _Note_: In the future, it is expected that objects of these classes will be transferred over a network or stored in a file or database.  
 
-- Empty string must be converted to `null` for referenced types 
-  or to the default value for primitive types.
-- Quoted empty string `""` must be converted to the empty string.
-- It's guaranteed that _quoted strings_ will not contain 
-  `quoteCharacter` inside data.
-> String representation of a value must be `quoted` if it contains `valuesDelimiter` \
-  If `valuesDelimiter = ","` and `quoteString = "'"` then the text 
-  `Value, which contains comma`, must be represented as `'Value, which contains comma'`.
+* The string representation of an object of these classes must follow the following convention:  
+      ``` 
+        Class_name{field1_name=field_value, field2_name=field_value, …}  
+        
+      ```
+     -	If a class inherits another class, it must include inherited fields before its own fields:  
+        ```
+         Class_name{parent_class_fields,   own_fields}
+        ```
+-	String values must be surrounded by apostrophes. For example: text='value' 
+-	If a field is a collection or an array, its value must be surrounded by square brackets.
+-	Fields must be ordered as denoted in the UML class diagram.
+•	The configuration properties stored in the CsvStorageImpl class are as follows:
+-	String encoding
+The encoding used when reading the csv files must be a valid charset. The default value is "UTF-8"
+-	String quoteCharacter
+The quote character is used for string data. The default value is '"'
+-	String valuesDelimiter
+The column delimiter character is used when reading a csv file. The default value is ","
+-	boolean headerLine
+If true, the first line is considered a header and must be ignored. The default value is "true"
+•	Converting string data to object field values has the following features:
+-	Empty string must be converted to null for referenced types or to the default value for primitive types.
+-	A quoted empty string "" must be converted to an empty string. It is guaranteed that quoted strings will not contain the quoteCharacter character.
+-	A string representation of a value must be quoted if it contains the valuesDelimiter character.
+-	A string representation of a date must be in the format "yyyy-mm-dd". It is guaranteed that a date will not contain time-related values.
+•	Converting object fields to strings has the following features:
+-	A null must be converted to an empty string.
+-	An empty string must be converted to a quoted empty string "".
+•	The write() method of the CsvStorageImp class never writes column headers.
 
-**Date and time formatting**
-
-The string representation of dates in `csv` must be:
-> four digits for a year then `-` then to digits for a month then `-` then two dits for a day. \
-  `1978-03-21`
-
-It is guaranteed that dates will not contain time related values.
-
-[//]: <> (>**Hint**. You can use `SimpleDateFormatter` to do that.)
-
-### Entity classes
-
-Each entity class must contain default constructor, constructor 
-with parameters for all fields, all necessary methods to compare 
-on equality in different types of containers.
-It's expected in future that objects of the classes will be
-transferred over a network or stored in a file or database.
-
-They should also be able to be represented as a string.
-
-The string representation must satisfy the following convention:
-
-```
-Class_name{field1_name=field_value, field2_name=field_value, …}
-```
-
-- If a class inherits another class, it must include accessible 
-  inherited fields before its own fields
-
-```
-Class_name{parent_class_fields, own_fields}
-```
-
-- String values must be surrounded by apostrophes: `text='value'`
-- If a field is a collection or an array its value must 
-  be surrounded by square braces.
-- Fields must be ordered as it denoted in the UML class diagram.
-
-#### Example of string representation:
-
-```
+An example of a string representation
+Let class A have the following description:
 class A {
     private int p = 10;
     protected int a = 1;
     protected String s = "a string";
     // ...
 }
-```
 
-```
+The string representation of the object will be as follows:
 A{p=10, a=1, s='a string'}
-```
 
-```
+Let class B be the inheritor of class A and have the following description:
 class B extends A {
     private int b = 5;
     private String t = "a text";
     private char[] chars = {'a', 'b'};
     // ...
 }
-```
 
-```
+The string representation of the object will be as follows:
 B{a=1, s='a string', b=5, t='a text', chars=[a, b]}
-```
+
+Restrictions
+You may not use lambda expressions or streams.
+
