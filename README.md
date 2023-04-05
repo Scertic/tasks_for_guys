@@ -1,4 +1,4 @@
-# Vehicle Rent Agency
+# Vehicle Rental Agency. IO
 
 The purpose of this exercise is to check your understanding of the Java input/output system.
 
