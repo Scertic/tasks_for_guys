@@ -32,10 +32,10 @@ Initializes the configuration properties of a csv file with the default values
 Initializes the configuration properties of a csv file with the received values  
 
 * `<T> List<T> read(InputStream source, Function<String[], T> mapper) throws IOException`  
-Returns the contents of the received file as a list of objects. The operation algorithm is as follows: It reads lines with data descriptions through the received source stream. Then, it splits each string into an array of String elements using valuesDelimiter. Then, it converts the resulting array into an object of the T type using the mapper parameter, a function that creates an object of the T type with field values taken from the given array.  
+Returns the contents of the received file as a list of objects. The operation algorithm is as follows: It reads lines with data descriptions through the received source stream. Then, it splits each string into an array of `String` elements using valuesDelimiter. Then, it converts the resulting array into an object of the `T` type using the mapper parameter, a function that creates an object of the `T` type with field values taken from the given array.  
 
 * `<T> void write(OutputStream dest, List<T> value, Function<T, String[]> mapper) throws IOException`  
-Writes the obtained list of objects to the specified dest stream. The operation algorithm is as follows: Each object of the T type is converted into an array of the String type using the mapper parameter. The elements of the array are then collected into a single string using valuesDelimiter to separate them. Then, the resulting string is written to a file. The mapper parameter is a function that converts an object of the T type into an array of the String type.  
+Writes the obtained list of objects to the specified dest stream. The operation algorithm is as follows: Each object of the `T` type is converted into an array of the String type using the mapper parameter. The elements of the array are then collected into a single string using valuesDelimiter to separate them. Then, the resulting string is written to a file. The mapper parameter is a function that converts an object of the `T` type into an array of the `String` type.  
 
 ### Details
 * Domain model classes must have the following:
