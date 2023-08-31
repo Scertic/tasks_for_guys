@@ -7,9 +7,12 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MapperTest {
 
@@ -33,7 +36,7 @@ class MapperTest {
     public static Stream<Arguments> casesCsvToEmployee() {
         return Stream.of(
                 Arguments.of(new String[]{"1", "a@a.a", "p", "n", "1", "1111-12-22"},
-                        new Employee(1, "a@a.a", "p", "n", "1", Util.parse("1111-12-22"))),
+                        new Employee(1, "a@a.a", "p", "n", "1", LocalDate.parse("1111-12-22"))),
                 Arguments.of(new String[]{"1", "\"\"", null, "n", "1", null},
                         new Employee(1, "\"\"", null, "n", "1", null)),
                 Arguments.of(new String[]{"1", "\"\"", null, "n", "1", ""},
@@ -73,17 +76,21 @@ class MapperTest {
 
     public static Stream<Arguments> casesOrderToCsv() {
         return Stream.of(
-                Arguments.of(new Order(1, 1, 1, 1, Util.parse("1122-11-22"), Util.parse("1122-11-23"), new BigDecimal("1")),
-                        new String[]{"1", "1", "1", "1", "1122-11-22", "1122-11-23", "1"}),
+                Arguments.of(new Order(1, 1, 1, 1,
+                                LocalDateTime.parse("1122-11-22T00:00"),
+                                LocalDateTime.parse("1122-11-23T00:00"),
+                                new BigDecimal("1")),
+                        new String[]{"1", "1", "1", "1", "1122-11-22T00:00", "1122-11-23T00:00", "1"}),
                 Arguments.of(new Order(1, 1, 1, 1, null, null, null),
-                        new String[]{"1","1","1","1",null,null,null})
+                        new String[]{"1", "1", "1", "1", null, null, null})
         );
     }
 
     @ParameterizedTest()
     @MethodSource("casesOrderToCsv")
     void orderToCsv(Order value, String[] expected) {
-        assertArrayEquals(expected, Mapper.orderToCsv(value));
+        String[] actual = Mapper.orderToCsv(value);
+        assertArrayEquals(expected, actual);
     }
 
     public static Stream<Arguments> casesClientToCsv() {
@@ -112,7 +119,7 @@ class MapperTest {
     public static Stream<Arguments> casesEmployeeToCsv() {
         return Stream.of(
                 Arguments.of(
-                        new Employee(1, "a@a.a", "p", "n", "1", Util.parse("1111-12-22")),
+                        new Employee(1, "a@a.a", "p", "n", "1", LocalDate.parse("1111-12-22")),
                         new String[]{"1", "a@a.a", "p", "n", "1", "1111-12-22"}
                 ),
                 Arguments.of(
@@ -145,7 +152,7 @@ class MapperTest {
                         new String[]{"0", "m", "md", "ch", "1", "2", "c", "lp", "0", null, String.valueOf((char) 0), null}
                 ),
                 Arguments.of(
-                        new Vehicle(0, "m", "","ch", 1, 2, "c",
+                        new Vehicle(0, "m", "", "ch", 1, 2, "c",
                                 "lp", 0, null, (char) 0, null),
                         new String[]{"0", "m", "", "ch", "1", "2", "c", "lp", "0", null, String.valueOf((char) 0), null}
                 )

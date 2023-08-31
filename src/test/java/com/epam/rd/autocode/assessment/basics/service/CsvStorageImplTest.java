@@ -13,11 +13,12 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.epam.rd.autocode.assessment.basics.service.Util.parse;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CsvStorageImplIntegrationTest {
@@ -26,10 +27,12 @@ class CsvStorageImplIntegrationTest {
     public static Stream<Arguments> casesDefaultRead() {
         return Stream.of(
                 Arguments.of(
-                        "id,email,password,name,balance,driverLicense\n" +
-                                "1,a@a.a,p,n,1,A\n" +
-                                "1,\"\",\"\",\"\",,\"\"\n" +
-                                ",,,,,\n",
+                        """
+                                id,email,password,name,balance,driverLicense
+                                1,a@a.a,p,n,1,A
+                                1,"","","",,""
+                                ,,,,,
+                                """,
                         List.of(
                                 new Client(1, "a@a.a", "p", "n", new BigDecimal("1"), "A"),
                                 new Client(1, "", "", "", null, ""),
@@ -90,7 +93,7 @@ class CsvStorageImplIntegrationTest {
                 Arguments.of(
                         "src/test/resources/service/employees.csv", "cp1251", "'", ";", "false",
                         List.of(
-                                new Employee(1, "admin@vpa.com", "kY$60;25,IL", "Адмінь", "111-602-23-00", parse("1996-07-03")),
+                                new Employee(1, "admin@vpa.com", "kY$60;25,IL", "Адмінь", "111-602-23-00", LocalDate.parse("1996-07-03")),
                                 new Employee(0, "", "", "", "", null),
                                 new Employee(0, null, null, null, null, null)
                         )
@@ -165,8 +168,8 @@ class CsvStorageImplIntegrationTest {
                 Arguments.of(
                         "src/test/resources/service/orders.csv", "cp1251", "'", ";", "false",
                         List.of(
-                                new Order(1, 1, 2, 9, Util.parse("2022-09-04"),
-                                        Util.parse("2022-10-14"), new BigDecimal("114")),
+                                new Order(1, 1, 2, 9, LocalDateTime.parse("2022-09-04T00:00"),
+                                        LocalDateTime.parse("2022-10-14T00:00"), new BigDecimal("114")),
                                 new Order(0, 0, 0, 0, null, null, null),
                                 new Order(0, 0, 0, 0, null, null, null)
                         )
@@ -262,7 +265,7 @@ class CsvStorageImplIntegrationTest {
                         "src/test/resources/service/employeesw.csv",
                         "cp1251", "'", ";", "false",
                         List.of(
-                                new Employee(1, "admin@vpa.com", "kY$60;25,IL", "Адмінь", "111-602-23-00", parse("1996-07-03")),
+                                new Employee(1, "admin@vpa.com", "kY$60;25,IL", "Адмінь", "111-602-23-00", LocalDate.parse("1996-07-03")),
                                 new Employee(0, "", "", "", "", null),
                                 new Employee(0, null, null, null, null, null)
                         )
@@ -340,7 +343,7 @@ class CsvStorageImplIntegrationTest {
                 Arguments.of(
                         "src/test/resources/service/ordersw.csv", "cp1251", "'", ";", "false",
                         List.of(
-                                new Order(1, 1, 2, 9, Util.parse("2022-09-04"), Util.parse("2022-10-14"), new BigDecimal("114")),
+                                new Order(1, 1, 2, 9, LocalDateTime.parse("2022-09-04T00:00"), LocalDateTime.parse("2022-10-14T00:00"), new BigDecimal("114")),
                                 new Order(0, 0, 0, 0, null, null, null),
                                 new Order(0, 0, 0, 0, null, null, null)
                         )
