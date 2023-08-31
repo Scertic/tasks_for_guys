@@ -1,6 +1,5 @@
-package com.epam.rd.autocode.assessment.basics.service.entity;
+package com.epam.rd.autocode.assessment.basics.entity;
 
-import com.epam.rd.autocode.assessment.basics.entity.*;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;
