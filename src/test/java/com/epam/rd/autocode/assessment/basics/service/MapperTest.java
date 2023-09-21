@@ -20,27 +20,28 @@ class MapperTest {
         return Stream.of(
                 Arguments.of(new String[]{"1", "a@a.a", "p", "n", "1", "A"},
                         new Client(1, "a@a.a", "p", "n", new BigDecimal("1"), "A")),
-                Arguments.of(new String[]{"1", "\"\"", null, "n", "", "A"},
-                        new Client(1, "\"\"", null, "n", null, "A")),
-                Arguments.of(new String[]{"1", "\"\"", null, "n", "", "A"},
-                        new Client(1, "\"\"", null, "n", null, "A"))
+                Arguments.of(new String[]{"", "\"\"",  "\"\"", "\"\"", "", "\"\""},
+                        new Client(0, "", "", "", null, "")),
+                Arguments.of(new String[]{"", "",  "", "", "", ""},
+                        new Client(0, null, null, null, null, null))
         );
     }
 
     @ParameterizedTest()
     @MethodSource("casesCsvToClient")
     void csvToClient(String[] values, Client expected) {
-        assertEquals(expected, Mapper.csvToClient(values));
+        Client actual = Mapper.csvToClient(values);
+        assertEquals(expected, actual);
     }
 
     public static Stream<Arguments> casesCsvToEmployee() {
         return Stream.of(
                 Arguments.of(new String[]{"1", "a@a.a", "p", "n", "1", "1111-12-22"},
                         new Employee(1, "a@a.a", "p", "n", "1", LocalDate.parse("1111-12-22"))),
-                Arguments.of(new String[]{"1", "\"\"", null, "n", "1", null},
-                        new Employee(1, "\"\"", null, "n", "1", null)),
-                Arguments.of(new String[]{"1", "\"\"", null, "n", "1", ""},
-                        new Employee(1, "\"\"", null, "n", "1", null))
+                Arguments.of(new String[]{ "", "\"\"",  "\"\"",  "\"\"",  "\"\"",  ""},
+                        new Employee(0, "", "", "", "", null)),
+                Arguments.of(new String[]{ "", "",  "",  "",  "",  ""},
+                        new Employee(0, null, null, null, null, null))
         );
     }
 

@@ -138,8 +138,8 @@ class CsvStorageImplIntegrationTest {
                                         "", "", 0, null, (char) 0, null),
                                 new Vehicle(0, null, null, null, 0, 0,
                                         null, null, 0, null, (char) 0, null)
-                        )
-                ));
+                        ))
+                );
     }
 
     @ParameterizedTest
@@ -309,9 +309,9 @@ class CsvStorageImplIntegrationTest {
                                         "сіра", "АХ 50-10 ХА", 5, new BigDecimal("10900"),
                                         'B', BodyType.HATCHBACK),
                                 new Vehicle(0, "", "", "", 0, 0,
-                                        "", "", 0, null, 'A', null),
+                                        "", "", 0, null, (char) 0, null),
                                 new Vehicle(0, null, null, null, 0, 0,
-                                        null, null, 0, null, 'A', null)
+                                        null, null, 0, null, (char) 0, null)
                         )
                 ));
     }
@@ -332,7 +332,10 @@ class CsvStorageImplIntegrationTest {
             storage.write(out, vehicles, Mapper::vehicleToCsv);
             out.flush();
             String expected = Files.readString(Path.of(fName), Charset.forName(encoding));
-            assertEquals(expected, out.toString(Charset.forName(encoding)));
+            String actual = out.toString(Charset.forName(encoding));
+//            Files.writeString(Path.of("src/test/resources/service/vehiclesw.csv"),
+//                    actual, Charset.forName(encoding));
+            assertEquals(expected, actual);
         } catch (IOException e) {
             fail(e);
         }
