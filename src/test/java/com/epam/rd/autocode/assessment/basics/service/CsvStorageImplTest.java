@@ -157,6 +157,8 @@ class CsvStorageImplIntegrationTest {
         CsvStorage storage = new CsvStorageImpl(props);
         try (FileInputStream in = new FileInputStream(fName)) {
             List<Vehicle> vehicle = storage.read(in, Mapper::csvToVehicle);
+            System.out.println(expected.get(2));
+            System.out.println(vehicle.get(2));
             assertIterableEquals(expected, vehicle);
         } catch (IOException e) {
             fail(e);
@@ -191,6 +193,8 @@ class CsvStorageImplIntegrationTest {
         CsvStorage storage = new CsvStorageImpl(props);
         try (FileInputStream in = new FileInputStream(fName)) {
             List<Order> order = storage.read(in, Mapper::csvToOrder);
+            System.out.println(expected.get(0));
+            System.out.println(order.get(0));
             assertIterableEquals(expected, order);
         } catch (IOException e) {
             fail(e);
