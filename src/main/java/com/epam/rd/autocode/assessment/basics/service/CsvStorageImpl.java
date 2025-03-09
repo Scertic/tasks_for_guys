@@ -81,6 +81,25 @@ public class CsvStorageImpl implements CsvStorage {
     @Override
     public <T> void write(OutputStream dest, List<T> values, Function<T, String[]> mapper) throws IOException {
         // place your code here
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(dest, encoding))) {
+            for (T value : values) {
+                String[] apply = mapper.apply(value);
+                System.out.println(value);
+                for (int i = 0; i < apply.length; i++) {
+                    if (apply[i] != null && apply[i].contains(valuesDelimiter)) {
+                        apply[i] = quoteCharacter+apply[i]+quoteCharacter;
+                    }
+                    if(apply[i] == null) {
+                        apply[i] = "";
+                    } else
+                    if (apply[i].isEmpty()) {
+                        apply[i] = quoteCharacter+quoteCharacter;
+                    }
+                }
+                String join = String.join(valuesDelimiter, apply);
+                bufferedWriter.write(join+System.lineSeparator());
+            }
+        }
     }
 
     public static void main(String[] args) {

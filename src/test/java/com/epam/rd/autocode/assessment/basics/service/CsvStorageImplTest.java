@@ -373,6 +373,8 @@ class CsvStorageImplIntegrationTest {
             storage.write(out, orders, Mapper::orderToCsv);
             out.flush();
             String expected = Files.readString(Path.of(fName), Charset.forName(encoding));
+            System.out.println(expected);
+            System.out.println(out.toString(Charset.forName(encoding)));
             assertEquals(expected, out.toString(Charset.forName(encoding)));
         } catch (IOException e) {
             fail(e);
