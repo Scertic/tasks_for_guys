@@ -45,7 +45,6 @@ public class CsvStorageImpl implements CsvStorage {
                 string = bufferedReader.readLine();
             }
             while ((string = bufferedReader.readLine()) != null) {
-//                System.out.println(string);
                 String[] split = splitRespectingQuotes(string, valuesDelimiter, quoteCharacter);
 //                for (int i = 0; i < split.length; i++) {
 //                    if (split[i].equals(quoteCharacter + quoteCharacter)) {
@@ -84,7 +83,6 @@ public class CsvStorageImpl implements CsvStorage {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(dest, encoding))) {
             for (T value : values) {
                 String[] apply = mapper.apply(value);
-                System.out.println(value);
                 for (int i = 0; i < apply.length; i++) {
                     if (apply[i] != null && apply[i].contains(valuesDelimiter)) {
                         apply[i] = quoteCharacter+apply[i]+quoteCharacter;
@@ -102,20 +100,5 @@ public class CsvStorageImpl implements CsvStorage {
         }
     }
 
-    public static void main(String[] args) {
-        String input = ";1;1;2;'9';2022-09-04T00:00;2022-10-14T00:00;114;";
-        String regex = "'[^']*'|[^;]+|(?<=;)(?=;)";
-
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(input);
-
-        List<String> matches = new ArrayList<>();
-        while (matcher.find()) {
-            matches.add(matcher.group().isEmpty() ? "" : matcher.group());
-        }
-
-        System.out.println(matches);
-
-    }
 
 }

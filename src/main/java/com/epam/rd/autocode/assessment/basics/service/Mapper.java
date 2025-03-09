@@ -11,7 +11,6 @@ public class Mapper {
 
     public static Client csvToClient(String[] values) {
         Client client = new Client();
-        System.out.println(values[0]);
         if (values[0] == null || values[0].isEmpty()) {
             client.setId(0);
         } else {
