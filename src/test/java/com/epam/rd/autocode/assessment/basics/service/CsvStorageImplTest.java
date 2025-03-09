@@ -157,8 +157,6 @@ class CsvStorageImplIntegrationTest {
         CsvStorage storage = new CsvStorageImpl(props);
         try (FileInputStream in = new FileInputStream(fName)) {
             List<Vehicle> vehicle = storage.read(in, Mapper::csvToVehicle);
-            System.out.println(expected.get(2));
-            System.out.println(vehicle.get(2));
             assertIterableEquals(expected, vehicle);
         } catch (IOException e) {
             fail(e);
@@ -193,8 +191,6 @@ class CsvStorageImplIntegrationTest {
         CsvStorage storage = new CsvStorageImpl(props);
         try (FileInputStream in = new FileInputStream(fName)) {
             List<Order> order = storage.read(in, Mapper::csvToOrder);
-            System.out.println(expected.get(0));
-            System.out.println(order.get(0));
             assertIterableEquals(expected, order);
         } catch (IOException e) {
             fail(e);
@@ -337,8 +333,6 @@ class CsvStorageImplIntegrationTest {
             out.flush();
             String expected = Files.readString(Path.of(fName), Charset.forName(encoding));
             String actual = out.toString(Charset.forName(encoding));
-//            Files.writeString(Path.of("src/test/resources/service/vehiclesw.csv"),
-//                    actual, Charset.forName(encoding));
             assertEquals(expected, actual);
         } catch (IOException e) {
             fail(e);
@@ -373,8 +367,6 @@ class CsvStorageImplIntegrationTest {
             storage.write(out, orders, Mapper::orderToCsv);
             out.flush();
             String expected = Files.readString(Path.of(fName), Charset.forName(encoding));
-            System.out.println(expected);
-            System.out.println(out.toString(Charset.forName(encoding)));
             assertEquals(expected, out.toString(Charset.forName(encoding)));
         } catch (IOException e) {
             fail(e);
