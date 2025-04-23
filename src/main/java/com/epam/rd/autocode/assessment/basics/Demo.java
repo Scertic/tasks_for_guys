@@ -18,7 +18,6 @@ public class Demo {
             try (InputStream in = new FileInputStream("src/test/resources/entity/client.csv")) {
                 List<Client> clients = storage.read(in, Mapper::csvToClient);
                 clients.forEach(System.out::println);
-
             }
 
             try (InputStream in = new FileInputStream("src/test/resources/entity/employee.csv")) {
