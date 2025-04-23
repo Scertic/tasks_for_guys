@@ -14,6 +14,7 @@ import java.util.List;
 public class Demo {
     public static void main(String[] args) {
         try {
+
             CsvStorage storage = new CsvStorageImpl();
             try (InputStream in = new FileInputStream("src/test/resources/entity/client.csv")) {
                 List<Client> clients = storage.read(in, Mapper::csvToClient);
